@@ -203,6 +203,15 @@
     }
   }
 
+  function callScript(params) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = img.onerror = resolve;
+      img.src = API_URL + '?' + new URLSearchParams(params).toString();
+      setTimeout(resolve, 4000);
+    });
+  }
+
   async function loadGuests() {
     document.getElementById('guestList').innerHTML = '<div class="loading-state">Cargando...</div>';
     try {
@@ -221,7 +230,7 @@
     const card = document.getElementById('card-' + id);
     card.classList.add('btn-loading');
     try {
-      await fetch(API_URL + '?action=approve&id=' + encodeURIComponent(id));
+      await callScript({ action: 'approve', id });
       guests = guests.map(g => g.id == id ? { ...g, status: 'aprobado' } : g);
     } catch (e) { alert('Error al aprobar. Intentá de nuevo.'); }
     render();
@@ -230,7 +239,7 @@
   async function reject(id) {
     if (!confirm('¿Rechazar este pago?')) return;
     try {
-      await fetch(API_URL + '?action=reject&id=' + encodeURIComponent(id));
+      await callScript({ action: 'reject', id });
       guests = guests.map(g => g.id == id ? { ...g, status: 'rechazado' } : g);
     } catch (e) { alert('Error al rechazar. Intentá de nuevo.'); }
     render();

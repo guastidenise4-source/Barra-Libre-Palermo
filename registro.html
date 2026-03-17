@@ -251,9 +251,14 @@
         precio: String(config.precio)
       });
       const url = API_URL + '?' + params.toString();
-      await fetch(url, { method: 'GET', mode: 'no-cors' });
+      await new Promise((resolve) => {
+        const img = new Image();
+        img.onload = img.onerror = resolve;
+        img.src = url;
+        setTimeout(resolve, 4000);
+      });
     } catch (e) {
-      // Continúa igual aunque falle la red — el invitado ya tiene instrucciones
+      // Continúa igual aunque falle
     }
 
     document.getElementById('successAlias').textContent = config.alias;
