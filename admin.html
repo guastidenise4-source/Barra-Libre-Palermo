@@ -167,6 +167,8 @@
   </div>
 </div>
 
+<iframe name="hidden_iframe" style="display:none;"></iframe>
+
 <!-- QR MODAL -->
 <div class="modal-bg" id="qrModal">
   <div class="qr-modal">
@@ -205,10 +207,20 @@
 
   function callScript(params) {
     return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = img.onerror = resolve;
-      img.src = API_URL + '?' + new URLSearchParams(params).toString();
-      setTimeout(resolve, 4000);
+      const form = document.createElement('form');
+      form.method = 'GET';
+      form.action = API_URL;
+      form.target = 'hidden_iframe';
+      for (const key in params) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = params[key];
+        form.appendChild(input);
+      }
+      document.body.appendChild(form);
+      form.submit();
+      setTimeout(() => { document.body.removeChild(form); resolve(); }, 3000);
     });
   }
 

@@ -169,6 +169,8 @@
   Cuando confirmemos el pago te llega el QR con la dirección al email.</p>
 </div>
 
+<iframe name="hidden_iframe" style="display:none;"></iframe>
+
 <button class="config-toggle" onclick="toggleConfig()" title="Configurar tanda">⚙</button>
 <div class="config-panel" id="configPanel">
   <div class="config-title">Configurar tanda</div>
@@ -242,21 +244,28 @@
     btn.textContent = 'Enviando...';
 
     try {
-      const params = new URLSearchParams({
+      const form = document.createElement('form');
+      form.method = 'GET';
+      form.action = API_URL;
+      form.target = 'hidden_iframe';
+      const fields = {
         action: 'register',
         nombre: nombre,
         dni: dni,
         email: email,
         tanda: config.tanda,
         precio: String(config.precio)
-      });
-      const url = API_URL + '?' + params.toString();
-      await new Promise((resolve) => {
-        const img = new Image();
-        img.onload = img.onerror = resolve;
-        img.src = url;
-        setTimeout(resolve, 4000);
-      });
+      };
+      for (const key in fields) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = fields[key];
+        form.appendChild(input);
+      }
+      document.body.appendChild(form);
+      form.submit();
+      setTimeout(() => document.body.removeChild(form), 2000);
     } catch (e) {
       // Continúa igual aunque falle
     }
