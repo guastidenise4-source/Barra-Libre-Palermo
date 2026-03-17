@@ -244,11 +244,14 @@
     try {
       const params = new URLSearchParams({
         action: 'register',
-        nombre, dni, email,
+        nombre: nombre,
+        dni: dni,
+        email: email,
         tanda: config.tanda,
-        precio: config.precio
+        precio: String(config.precio)
       });
-      await fetch(API_URL + '?' + params.toString());
+      const url = API_URL + '?' + params.toString();
+      await fetch(url, { method: 'GET', mode: 'no-cors' });
     } catch (e) {
       // Continúa igual aunque falle la red — el invitado ya tiene instrucciones
     }
