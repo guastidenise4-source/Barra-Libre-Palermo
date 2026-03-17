@@ -242,15 +242,13 @@
     btn.textContent = 'Enviando...';
 
     try {
-      await fetch(API_URL, {
-        method: 'POST',
-        body: JSON.stringify({
-          action: 'register',
-          nombre, dni, email,
-          tanda: config.tanda,
-          precio: config.precio
-        })
+      const params = new URLSearchParams({
+        action: 'register',
+        nombre, dni, email,
+        tanda: config.tanda,
+        precio: config.precio
       });
+      await fetch(API_URL + '?' + params.toString());
     } catch (e) {
       // Continúa igual aunque falle la red — el invitado ya tiene instrucciones
     }

@@ -206,10 +206,7 @@
   async function loadGuests() {
     document.getElementById('guestList').innerHTML = '<div class="loading-state">Cargando...</div>';
     try {
-      const res = await fetch(API_URL, {
-        method: 'POST',
-        body: JSON.stringify({ action: 'getAll' })
-      });
+      const res = await fetch(API_URL + '?action=getAll');
       const data = await res.json();
       guests = data.guests || [];
     } catch (e) {
@@ -224,7 +221,7 @@
     const card = document.getElementById('card-' + id);
     card.classList.add('btn-loading');
     try {
-      await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'approve', id }) });
+      await fetch(API_URL + '?action=approve&id=' + encodeURIComponent(id));
       guests = guests.map(g => g.id == id ? { ...g, status: 'aprobado' } : g);
     } catch (e) { alert('Error al aprobar. Intentá de nuevo.'); }
     render();
@@ -233,7 +230,7 @@
   async function reject(id) {
     if (!confirm('¿Rechazar este pago?')) return;
     try {
-      await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'reject', id }) });
+      await fetch(API_URL + '?action=reject&id=' + encodeURIComponent(id));
       guests = guests.map(g => g.id == id ? { ...g, status: 'rechazado' } : g);
     } catch (e) { alert('Error al rechazar. Intentá de nuevo.'); }
     render();

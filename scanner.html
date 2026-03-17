@@ -206,15 +206,11 @@
       if (parsed && parsed.id && parsed.event === 'BLP-20250411') {
         // Verificar contra la API
         try {
-          const res = await fetch(API_URL, {
-            method: 'POST',
-            body: JSON.stringify({ action: 'getAll' })
-          });
+          const res = await fetch(API_URL + '?action=getAll');
           const data = await res.json();
           const found = (data.guests || []).find(g => String(g.id) === String(parsed.id) && g.status === 'aprobado');
           if (found) guest = { id: found.id, name: found.name, dni: found.dni };
         } catch (e) {
-          // Si falla la red, usar solo datos del QR como fallback
           guest = { id: parsed.id, name: parsed.nombre, dni: parsed.dni, offline: true };
         }
       }
