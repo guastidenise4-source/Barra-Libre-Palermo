@@ -4,136 +4,89 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Control de Acceso — Barra Libre Palermo</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/jsQR.min.js"></script>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #0a0a0a; color: #f0ece0; font-family: 'DM Sans', sans-serif; min-height: 100vh; }
-
-  /* LOGIN */
-  .login-screen {
-    display: flex; align-items: center; justify-content: center;
-    min-height: 100vh; padding: 24px;
-  }
-  .login-box {
-    background: #111; border: 1px solid #2a2a2a; border-radius: 16px;
-    padding: 36px 28px; width: 100%; max-width: 320px; text-align: center;
-  }
-  .login-title { font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: #c8893a; letter-spacing: 2px; margin-bottom: 6px; }
-  .login-sub { font-size: 12px; color: #555; margin-bottom: 24px; }
-  .login-input {
-    width: 100%; background: #1a1a1a; border: 1px solid #2a2a2a; color: #f0ece0;
-    font-family: 'DM Sans', sans-serif; font-size: 15px; padding: 12px 14px;
-    border-radius: 8px; outline: none; margin-bottom: 12px; text-align: center; letter-spacing: 2px;
-  }
-  .login-input:focus { border-color: #c8893a; }
-  .login-btn {
-    width: 100%; background: #c8893a; color: #0a0a0a; border: none; border-radius: 8px;
-    font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 2px; padding: 13px; cursor: pointer;
-  }
-  .login-error { color: #E24B4A; font-size: 12px; margin-top: 10px; display: none; }
-
-  /* APP */
-  .app { display: none; }
-  .topbar {
-    background: #111; border-bottom: 1px solid #222;
-    padding: 14px 20px; text-align: center;
-    position: sticky; top: 0; z-index: 10;
-  }
-  .topbar-title { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 2px; color: #c8893a; }
-  .topbar-sub { font-size: 11px; color: #555; margin-top: 1px; }
-  .container { max-width: 420px; margin: 0 auto; padding: 24px 18px 60px; }
-
-  .scanner-box {
-    background: #111; border: 1px solid #2a2a2a; border-radius: 14px;
-    padding: 24px 18px; margin-bottom: 18px;
-  }
-  .scanner-label { font-size: 12px; color: #666; text-align: center; margin-bottom: 14px; line-height: 1.5; }
-  .scan-input-row { display: flex; gap: 8px; }
-  .qr-input {
-    flex: 1; background: #1a1a1a; border: 1px solid #2a2a2a; color: #f0ece0;
-    font-family: 'DM Sans', sans-serif; font-size: 15px; padding: 13px 14px;
-    border-radius: 8px; outline: none; transition: border-color 0.2s;
-  }
-  .qr-input:focus { border-color: #c8893a; }
-  .qr-input::placeholder { color: #444; }
-  .scan-btn {
-    background: #c8893a; border: none; color: #0a0a0a;
-    font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 1px;
-    padding: 13px 16px; border-radius: 8px; cursor: pointer; white-space: nowrap;
-  }
-  .scan-hint { font-size: 11px; color: #444; text-align: center; margin-top: 10px; }
-
-  .result-box {
-    border-radius: 14px; padding: 28px 20px; text-align: center;
-    display: none; margin-bottom: 18px;
-  }
-  .result-box.valid { background: #0a1e14; border: 2px solid #5DCAA5; display: block; }
-  .result-box.invalid { background: #1e0a0a; border: 2px solid #E24B4A; display: block; }
-  .result-box.used { background: #1a1508; border: 2px solid #c8893a; display: block; }
-
-  .result-icon-wrap {
-    width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 14px;
-    display: flex; align-items: center; justify-content: center; font-size: 26px;
-  }
-  .valid .result-icon-wrap { background: #0f2e20; }
-  .invalid .result-icon-wrap { background: #2e1010; }
-  .used .result-icon-wrap { background: #2a2010; }
-
-  .result-title { font-family: 'Bebas Neue', sans-serif; font-size: 34px; letter-spacing: 2px; margin-bottom: 6px; }
-  .valid .result-title { color: #5DCAA5; }
-  .invalid .result-title { color: #E24B4A; }
-  .used .result-title { color: #c8893a; }
-  .result-name { font-size: 17px; font-weight: 500; color: #f0ece0; margin-bottom: 4px; }
-  .result-detail { font-size: 13px; color: #888; }
-
-  .counter-row {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 18px;
-  }
-  .counter-card { background: #111; border: 1px solid #1e1e1e; border-radius: 10px; padding: 14px 10px; text-align: center; }
-  .counter-num { font-family: 'Bebas Neue', sans-serif; font-size: 28px; line-height: 1; }
-  .counter-label { font-size: 10px; color: #555; margin-top: 3px; letter-spacing: 1px; text-transform: uppercase; }
-  .cnt-green { color: #5DCAA5; }
-  .cnt-gold { color: #c8893a; }
-  .cnt-red { color: #E24B4A; }
-
-  .history-section { }
-  .history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-  .history-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #444; }
-  .clear-btn { font-size: 11px; color: #555; background: none; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; }
-  .history-item {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 10px 14px; background: #111; border: 1px solid #1e1e1e;
-    border-radius: 8px; margin-bottom: 8px;
-  }
-  .hi-name { font-size: 13px; color: #f0ece0; }
-  .hi-time { font-size: 11px; color: #555; margin-top: 2px; }
-  .hi-badge { font-size: 10px; padding: 3px 10px; border-radius: 20px; font-weight: 500; letter-spacing: 0.5px; }
-  .hi-ok { background: #0a1e14; color: #5DCAA5; }
-  .hi-used { background: #1a1508; color: #c8893a; }
-  .hi-no { background: #1e0a0a; color: #E24B4A; }
-  .empty-hist { font-size: 13px; color: #333; text-align: center; padding: 16px 0; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#f0ece0;font-family:'DM Sans',sans-serif;min-height:100vh}
+.login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px}
+.login-box{background:#111;border:1px solid #2a2a2a;border-radius:16px;padding:36px 28px;width:100%;max-width:320px;text-align:center}
+.login-title{font-family:'Bebas Neue',sans-serif;font-size:26px;color:#c8893a;letter-spacing:2px;margin-bottom:6px}
+.login-sub{font-size:12px;color:#555;margin-bottom:24px}
+.login-input{width:100%;background:#1a1a1a;border:1px solid #2a2a2a;color:#f0ece0;font-family:'DM Sans',sans-serif;font-size:15px;padding:12px 14px;border-radius:8px;outline:none;margin-bottom:12px;text-align:center;letter-spacing:2px}
+.login-input:focus{border-color:#c8893a}
+.login-btn{width:100%;background:#c8893a;color:#0a0a0a;border:none;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;padding:13px;cursor:pointer}
+.login-error{color:#E24B4A;font-size:12px;margin-top:10px;display:none}
+.app{display:none}
+.topbar{background:#111;border-bottom:1px solid #222;padding:14px 20px;text-align:center;position:sticky;top:0;z-index:10}
+.topbar-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:#c8893a}
+.topbar-sub{font-size:11px;color:#555;margin-top:1px}
+.container{max-width:420px;margin:0 auto;padding:24px 18px 60px}
+.counter-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
+.counter-card{background:#111;border:1px solid #1e1e1e;border-radius:10px;padding:14px 10px;text-align:center}
+.counter-num{font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1}
+.counter-label{font-size:10px;color:#555;margin-top:3px;letter-spacing:1px;text-transform:uppercase}
+.cnt-green{color:#5DCAA5}.cnt-gold{color:#c8893a}.cnt-red{color:#E24B4A}
+.cam-box{background:#111;border:1px solid #2a2a2a;border-radius:14px;overflow:hidden;margin-bottom:18px}
+.cam-header{padding:14px 18px;display:flex;justify-content:space-between;align-items:center}
+.cam-label{font-size:12px;color:#666}
+.cam-btn{background:#c8893a;border:none;color:#0a0a0a;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;padding:8px 16px;border-radius:7px;cursor:pointer}
+.cam-btn.stop{background:#1e0a0a;color:#E24B4A;border:1px solid #E24B4A44}
+.cam-btn:disabled{opacity:0.5;cursor:not-allowed}
+.video-wrap{position:relative;width:100%;display:none}
+.video-wrap.active{display:block}
+video{width:100%;display:block}
+.scan-line{position:absolute;top:0;left:0;right:0;height:3px;background:#c8893a;opacity:0.8;animation:scanAnim 2s linear infinite}
+@keyframes scanAnim{0%{top:0}100%{top:100%}}
+.corner{position:absolute;width:24px;height:24px;border-color:#c8893a;border-style:solid;opacity:0.9}
+.corner.tl{top:12px;left:12px;border-width:3px 0 0 3px}
+.corner.tr{top:12px;right:12px;border-width:3px 3px 0 0}
+.corner.bl{bottom:12px;left:12px;border-width:0 0 3px 3px}
+.corner.br{bottom:12px;right:12px;border-width:0 3px 3px 0}
+.manual-box{padding:14px 18px;border-top:1px solid #1a1a1a}
+.manual-label{font-size:11px;color:#555;margin-bottom:8px;text-align:center}
+.scan-input-row{display:flex;gap:8px}
+.qr-input{flex:1;background:#1a1a1a;border:1px solid #2a2a2a;color:#f0ece0;font-family:'DM Sans',sans-serif;font-size:14px;padding:11px 14px;border-radius:8px;outline:none}
+.qr-input:focus{border-color:#c8893a}
+.qr-input::placeholder{color:#444}
+.scan-btn{background:#c8893a;border:none;color:#0a0a0a;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;padding:11px 14px;border-radius:8px;cursor:pointer}
+.result-box{border-radius:14px;padding:28px 20px;text-align:center;display:none;margin-bottom:18px}
+.result-box.valid{background:#0a1e14;border:2px solid #5DCAA5;display:block}
+.result-box.invalid{background:#1e0a0a;border:2px solid #E24B4A;display:block}
+.result-box.used{background:#1a1508;border:2px solid #c8893a;display:block}
+.result-icon-wrap{width:60px;height:60px;border-radius:50%;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:26px}
+.valid .result-icon-wrap{background:#0f2e20}.invalid .result-icon-wrap{background:#2e1010}.used .result-icon-wrap{background:#2a2010}
+.result-title{font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:2px;margin-bottom:6px}
+.valid .result-title{color:#5DCAA5}.invalid .result-title{color:#E24B4A}.used .result-title{color:#c8893a}
+.result-name{font-size:17px;font-weight:500;color:#f0ece0;margin-bottom:4px}
+.result-detail{font-size:13px;color:#888}
+.history-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.history-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#444}
+.clear-btn{font-size:11px;color:#555;background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
+.history-item{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#111;border:1px solid #1e1e1e;border-radius:8px;margin-bottom:8px}
+.hi-name{font-size:13px;color:#f0ece0}.hi-time{font-size:11px;color:#555;margin-top:2px}
+.hi-badge{font-size:10px;padding:3px 10px;border-radius:20px;font-weight:500}
+.hi-ok{background:#0a1e14;color:#5DCAA5}.hi-used{background:#1a1508;color:#c8893a}.hi-no{background:#1e0a0a;color:#E24B4A}
+.empty-hist{font-size:13px;color:#333;text-align:center;padding:16px 0}
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
 <div class="login-screen" id="loginScreen">
   <div class="login-box">
     <div class="login-title">Control de Acceso</div>
     <div class="login-sub">Barra Libre Palermo · 11 Abr</div>
-    <input type="password" class="login-input" id="passInput" placeholder="Contraseña" onkeydown="if(event.key==='Enter') doLogin()">
+    <input type="password" class="login-input" id="passInput" placeholder="Contraseña" onkeydown="if(event.key==='Enter')doLogin()">
     <button class="login-btn" onclick="doLogin()">Ingresar</button>
     <div class="login-error" id="loginError">Contraseña incorrecta.</div>
   </div>
 </div>
 
-<!-- APP -->
 <div class="app" id="appScreen">
   <div class="topbar">
     <div class="topbar-title">Control de Acceso</div>
     <div class="topbar-sub">Barra Libre Palermo · 11 Abr</div>
   </div>
-
   <div class="container">
     <div class="counter-row">
       <div class="counter-card"><div class="counter-num cnt-green" id="cntOk">0</div><div class="counter-label">Ingresaron</div></div>
@@ -141,13 +94,24 @@
       <div class="counter-card"><div class="counter-num cnt-red" id="cntInvalid">0</div><div class="counter-label">Inválidos</div></div>
     </div>
 
-    <div class="scanner-box">
-      <div class="scanner-label">Escaneá el QR del invitado con una app lectora<br>y pegá el código acá, o ingresalo manualmente</div>
-      <div class="scan-input-row">
-        <input class="qr-input" id="qrInput" placeholder="Código QR..." onkeydown="if(event.key==='Enter') scanQR()" autofocus>
-        <button class="scan-btn" onclick="scanQR()">Validar</button>
+    <div class="cam-box">
+      <div class="cam-header">
+        <div class="cam-label" id="camLabel">Cargando lista...</div>
+        <button class="cam-btn" id="camBtn" onclick="toggleCamera()" disabled>Abrir cámara</button>
       </div>
-      <div class="scan-hint">También podés conectar un lector de QR por USB o Bluetooth — el código se pega automáticamente</div>
+      <div class="video-wrap" id="videoWrap">
+        <video id="video" playsinline autoplay muted></video>
+        <div class="scan-line"></div>
+        <div class="corner tl"></div><div class="corner tr"></div>
+        <div class="corner bl"></div><div class="corner br"></div>
+      </div>
+      <div class="manual-box">
+        <div class="manual-label">O pegá el código manualmente</div>
+        <div class="scan-input-row">
+          <input class="qr-input" id="qrInput" placeholder="Código QR..." onkeydown="if(event.key==='Enter')scanManual()">
+          <button class="scan-btn" onclick="scanManual()">Validar</button>
+        </div>
+      </div>
     </div>
 
     <div class="result-box" id="resultBox">
@@ -157,104 +121,135 @@
       <div class="result-detail" id="resultDetail"></div>
     </div>
 
-    <div class="history-section">
-      <div class="history-header">
-        <div class="history-label">Últimos escaneos</div>
-        <button class="clear-btn" onclick="clearHistory()">Limpiar</button>
-      </div>
-      <div id="historyList"></div>
+    <div class="history-header">
+      <div class="history-label">Últimos escaneos</div>
+      <button class="clear-btn" onclick="clearHistory()">Limpiar</button>
     </div>
+    <div id="historyList"></div>
   </div>
 </div>
 
-<script>
-  // ============================================================
-  // PEGÁ ACÁ LA URL DE TU APPS SCRIPT (Paso 3 del tutorial)
-  const API_URL = 'https://script.google.com/macros/s/AKfycbyqawYio7MOmRfLjGhYj-1SfNLcv8QmfPnZjSO5f0fCx0dxKKbLgOqjBEjWZG0DTNZBUQ/exec';
+<canvas id="canvas" style="display:none"></canvas>
 
-  // MISMA CONTRASEÑA QUE EN admin.html
+<script>
+  const API_URL = 'https://script.google.com/macros/s/AKfycbwdBR-0pTI6rkCQPiuChgrQWDd3Tz8bPiY4voqDf-oxbh_b7jIjijQ0ffxVwLoL0bvkmQ/exec';
   const SCANNER_PASSWORD = 'fiesta2025';
-  // ============================================================
 
   let scannedIds = new Set();
   let history = [];
   let counts = { ok: 0, used: 0, invalid: 0 };
+  let approvedGuests = [];
+  let stream = null, scanning = false, lastScan = 0;
 
   function doLogin() {
-    const pass = document.getElementById('passInput').value;
-    if (pass === SCANNER_PASSWORD) {
+    if (document.getElementById('passInput').value === SCANNER_PASSWORD) {
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('appScreen').style.display = 'block';
-      document.getElementById('qrInput').focus();
+      loadGuests();
     } else {
       document.getElementById('loginError').style.display = 'block';
     }
   }
 
-  async function scanQR() {
+  async function loadGuests() {
+    try {
+      const res = await fetch(API_URL + '?action=getAll');
+      const data = await res.json();
+      approvedGuests = (data.guests || []).filter(g => g.status === 'aprobado');
+      document.getElementById('camLabel').textContent = 'Escáner · ' + approvedGuests.length + ' aprobados cargados';
+    } catch(e) {
+      document.getElementById('camLabel').textContent = 'Lista no disponible — verificá conexión';
+    }
+    document.getElementById('camBtn').disabled = false;
+    renderHistory();
+  }
+
+  async function toggleCamera() {
+    if (stream) { stopCamera(); return; }
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false });
+      const video = document.getElementById('video');
+      video.srcObject = stream;
+      document.getElementById('videoWrap').classList.add('active');
+      document.getElementById('camBtn').textContent = 'Cerrar cámara';
+      document.getElementById('camBtn').classList.add('stop');
+      scanning = true;
+      requestAnimationFrame(scanFrame);
+    } catch(e) {
+      alert('No se pudo acceder a la cámara. Verificá los permisos en el navegador.');
+    }
+  }
+
+  function stopCamera() {
+    scanning = false;
+    if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+    document.getElementById('videoWrap').classList.remove('active');
+    document.getElementById('camBtn').textContent = 'Abrir cámara';
+    document.getElementById('camBtn').classList.remove('stop');
+  }
+
+  function scanFrame() {
+    if (!scanning) return;
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    if (video.readyState === video.HAVE_ENOUGH_DATA) {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: 'dontInvert' });
+      if (code) {
+        const now = Date.now();
+        if (now - lastScan > 3000) { lastScan = now; processQR(code.data); }
+      }
+    }
+    requestAnimationFrame(scanFrame);
+  }
+
+  function scanManual() {
     const raw = document.getElementById('qrInput').value.trim();
     if (!raw) return;
     document.getElementById('qrInput').value = '';
-    document.getElementById('qrInput').focus();
+    processQR(raw);
+  }
 
+  function processQR(raw) {
     const now = new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
     let guest = null;
-
-    // Intentar parsear JSON del QR
     try {
       const parsed = JSON.parse(raw);
       if (parsed && parsed.id && parsed.event === 'BLP-20250411') {
-        // Verificar contra la API
-        try {
-          const res = await fetch(API_URL + '?action=getAll');
-          const data = await res.json();
-          const found = (data.guests || []).find(g => String(g.id) === String(parsed.id) && g.status === 'aprobado');
-          if (found) guest = { id: found.id, name: found.name, dni: found.dni };
-        } catch (e) {
-          guest = { id: parsed.id, name: parsed.nombre, dni: parsed.dni, offline: true };
-        }
+        guest = approvedGuests.find(g => String(g.id) === String(parsed.id)) || null;
       }
-    } catch (e) { /* no es JSON válido */ }
+    } catch(e) {}
 
     const box = document.getElementById('resultBox');
-    const icon = document.getElementById('resultIcon');
-    const title = document.getElementById('resultTitle');
-    const name = document.getElementById('resultName');
-    const detail = document.getElementById('resultDetail');
-
     if (!guest) {
       box.className = 'result-box invalid';
-      icon.textContent = '✕';
-      title.textContent = 'No válido';
-      name.textContent = 'QR desconocido';
-      detail.textContent = 'Este código no está en la lista de aprobados';
-      counts.invalid++;
-      addHistory('Desconocido', 'no', now);
+      document.getElementById('resultIcon').textContent = '✕';
+      document.getElementById('resultTitle').textContent = 'No válido';
+      document.getElementById('resultName').textContent = 'QR desconocido';
+      document.getElementById('resultDetail').textContent = 'Este código no está en la lista de aprobados';
+      counts.invalid++; addHistory('Desconocido', 'no', now);
     } else if (scannedIds.has(String(guest.id))) {
       box.className = 'result-box used';
-      icon.textContent = '!';
-      title.textContent = 'Ya ingresó';
-      name.textContent = guest.name;
-      detail.textContent = 'DNI ' + guest.dni + ' · Este QR ya fue escaneado';
-      counts.used++;
-      addHistory(guest.name, 'used', now);
+      document.getElementById('resultIcon').textContent = '!';
+      document.getElementById('resultTitle').textContent = 'Ya ingresó';
+      document.getElementById('resultName').textContent = guest.name;
+      document.getElementById('resultDetail').textContent = 'DNI ' + guest.dni + ' · QR ya usado';
+      counts.used++; addHistory(guest.name, 'used', now);
     } else {
       scannedIds.add(String(guest.id));
       box.className = 'result-box valid';
-      icon.textContent = '✓';
-      title.textContent = '¡Puede ingresar!';
-      name.textContent = guest.name;
-      detail.textContent = 'DNI ' + guest.dni + (guest.offline ? ' · Verificación offline' : '');
-      counts.ok++;
-      addHistory(guest.name, 'ok', now);
+      document.getElementById('resultIcon').textContent = '✓';
+      document.getElementById('resultTitle').textContent = '¡Puede ingresar!';
+      document.getElementById('resultName').textContent = guest.name;
+      document.getElementById('resultDetail').textContent = 'DNI ' + guest.dni;
+      counts.ok++; addHistory(guest.name, 'ok', now);
     }
-
     updateCounters();
-
-    // Vibración en móvil
-    if (navigator.vibrate) {
-      navigator.vibrate(guest && !scannedIds.has ? [200] : [100, 50, 100]);
-    }
+    if (navigator.vibrate) navigator.vibrate([200]);
   }
 
   function addHistory(name, status, time) {
@@ -265,21 +260,14 @@
 
   function renderHistory() {
     const list = document.getElementById('historyList');
-    if (history.length === 0) {
-      list.innerHTML = '<div class="empty-hist">Sin escaneos aún</div>';
-      return;
-    }
+    if (history.length === 0) { list.innerHTML = '<div class="empty-hist">Sin escaneos aún</div>'; return; }
     list.innerHTML = history.map(h => `
       <div class="history-item">
-        <div>
-          <div class="hi-name">${h.name}</div>
-          <div class="hi-time">${h.time}</div>
-        </div>
+        <div><div class="hi-name">${h.name}</div><div class="hi-time">${h.time}</div></div>
         <span class="hi-badge ${h.status === 'ok' ? 'hi-ok' : h.status === 'used' ? 'hi-used' : 'hi-no'}">
           ${h.status === 'ok' ? 'Ingresó' : h.status === 'used' ? 'Ya usado' : 'Rechazado'}
         </span>
-      </div>
-    `).join('');
+      </div>`).join('');
   }
 
   function updateCounters() {
@@ -289,10 +277,8 @@
   }
 
   function clearHistory() {
-    history = [];
-    counts = { ok: 0, used: 0, invalid: 0 };
-    updateCounters();
-    renderHistory();
+    history = []; counts = { ok: 0, used: 0, invalid: 0 };
+    updateCounters(); renderHistory();
     document.getElementById('resultBox').style.display = 'none';
   }
 
