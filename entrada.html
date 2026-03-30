@@ -156,7 +156,10 @@ input::placeholder{color:#444}
     applyConfig();
     document.getElementById('configPanel').classList.remove('open');
   }
-  function toggleConfig() { document.getElementById('configPanel').classList.toggle('open'); }
+  function toggleConfig(){
+    const pass=prompt('Contraseña:');
+    if(pass==='fiesta2025'){document.getElementById('configPanel').classList.toggle('open');}
+  }
   function copyAlias() {
     const alias = document.getElementById('aliasDisplay').textContent;
     navigator.clipboard.writeText(alias).catch(() => {});
