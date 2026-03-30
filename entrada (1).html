@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Barra Libre Palermo</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#f0ece0;font-family:'DM Sans',sans-serif;min-height:100vh}
+.hero{text-align:center;padding:60px 24px 40px;border-bottom:1px solid #222}
+.event-tag{display:inline-block;font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#c8893a;border:1px solid #c8893a44;padding:5px 14px;border-radius:20px;margin-bottom:20px}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,12vw,96px);line-height:.95;color:#f0ece0;letter-spacing:2px;margin-bottom:6px}
+h1 span{color:#c8893a}
+.event-info{display:flex;justify-content:center;gap:20px;margin-top:20px;flex-wrap:wrap}
+.event-pill{font-size:13px;color:#888;display:flex;align-items:center;gap:6px}
+.event-pill strong{color:#f0ece0;font-weight:500}
+.dot{width:4px;height:4px;border-radius:50%;background:#c8893a;flex-shrink:0}
+.container{max-width:480px;margin:0 auto;padding:40px 24px 80px}
+.section-label{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:#555;margin-bottom:20px}
+.form-group{margin-bottom:18px}
+label{display:block;font-size:12px;color:#888;margin-bottom:7px}
+input{width:100%;background:#141414;border:1px solid #2a2a2a;color:#f0ece0;font-family:'DM Sans',sans-serif;font-size:15px;padding:13px 16px;border-radius:8px;outline:none;-webkit-appearance:none}
+input:focus{border-color:#c8893a}
+input::placeholder{color:#444}
+.price-box{background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:20px;margin:28px 0;display:flex;justify-content:space-between;align-items:center}
+.price-label{font-size:13px;color:#666}
+.tanda-pill{display:inline-block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#c8893a;background:#2a1e0a;border:1px solid #c8893a44;padding:3px 10px;border-radius:20px;margin-top:5px}
+.price-value{font-family:'Bebas Neue',sans-serif;font-size:32px;color:#c8893a;letter-spacing:1px}
+.payment-box{background:#0e0e0e;border:1px solid #2a2a2a;border-radius:12px;padding:20px;margin-bottom:28px}
+.payment-title{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#c8893a;margin-bottom:14px}
+.step{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start}
+.step-num{width:22px;height:22px;border-radius:50%;background:#1e1e1e;border:1px solid #333;display:flex;align-items:center;justify-content:center;font-size:11px;color:#c8893a;flex-shrink:0;margin-top:1px}
+.step-text{font-size:14px;color:#aaa;line-height:1.5}
+.step-text strong{color:#f0ece0;font-weight:500}
+.step-text a{color:#c8893a;text-decoration:none}
+.alias-box{background:#1a1a1a;border-radius:8px;padding:10px 14px;margin-top:10px;font-size:13px;color:#888;display:flex;justify-content:space-between;align-items:center}
+.alias-val{font-family:monospace;color:#f0ece0;font-size:14px}
+.copy-btn{font-size:11px;color:#c8893a;background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;padding:4px 8px}
+.submit-btn{width:100%;background:#c8893a;color:#0a0a0a;border:none;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;padding:16px;cursor:pointer;-webkit-appearance:none}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed}
+.disclaimer{text-align:center;font-size:12px;color:#444;margin-top:16px;line-height:1.6}
+.success-screen{display:none;text-align:center;padding:80px 24px;max-width:400px;margin:0 auto}
+.success-icon{width:64px;height:64px;border-radius:50%;background:#1a1a1a;border:2px solid #c8893a;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:26px}
+.success-title{font-family:'Bebas Neue',sans-serif;font-size:42px;color:#c8893a;margin-bottom:10px}
+.success-text{font-size:14px;color:#888;line-height:1.7}
+.config-toggle{position:fixed;bottom:20px;right:20px;background:#c8893a;border:none;border-radius:50%;width:46px;height:46px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;z-index:50}
+.config-panel{display:none;position:fixed;bottom:76px;right:20px;background:#161616;border:1px solid #2a2a2a;border-radius:14px;padding:20px;width:280px;z-index:50}
+.config-panel.open{display:block}
+.config-title{font-family:'Bebas Neue',sans-serif;font-size:18px;color:#c8893a;letter-spacing:1px;margin-bottom:16px}
+.config-field{margin-bottom:14px}
+.config-field label{font-size:11px;color:#666;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;display:block}
+.config-field input{background:#1a1a1a;border:1px solid #2a2a2a;padding:9px 12px;font-size:14px;border-radius:7px}
+.config-save{width:100%;background:#c8893a;color:#0a0a0a;border:none;border-radius:7px;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;padding:10px;cursor:pointer;margin-top:4px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="event-tag" id="tandaTag">Tanda 1</div>
+  <h1>Barra Libre<br><span>Palermo</span></h1>
+  <div class="event-info">
+    <div class="event-pill"><div class="dot"></div><strong>11 de Abril</strong></div>
+    <div class="event-pill"><div class="dot"></div><strong>01:00 — 06:00 hs</strong></div>
+    <div class="event-pill"><div class="dot"></div><strong>Cachengue</strong></div>
+    <div class="event-pill"><div class="dot"></div><strong>Palermo, CABA</strong></div>
+  </div>
+</div>
+
+<div class="container" id="formSection">
+  <div class="section-label">Completá tus datos</div>
+  <div class="form-group">
+    <label>Nombre y apellido</label>
+    <input type="text" id="nombre" placeholder="Ej: Valentina Gómez" autocomplete="name">
+  </div>
+  <div class="form-group">
+    <label>DNI</label>
+    <input type="text" id="dni" placeholder="Ej: 40123456" inputmode="numeric">
+  </div>
+  <div class="form-group">
+    <label>Email</label>
+    <input type="email" id="email" placeholder="tu@email.com" autocomplete="email">
+  </div>
+
+  <div class="price-box">
+    <div>
+      <div class="price-label">Entrada con barra libre</div>
+      <div class="tanda-pill" id="tandaPill">Tanda 1</div>
+    </div>
+    <div class="price-value" id="priceDisplay">$30.000</div>
+  </div>
+
+  <div class="payment-box">
+    <div class="payment-title">Cómo pagar</div>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text">Completá el formulario y hacé clic en <strong>Enviar registro</strong>.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text">Transferí el importe a este alias:
+        <div class="alias-box">
+          <span class="alias-val" id="aliasDisplay">tanda1</span>
+          <button class="copy-btn" onclick="copyAlias()">copiar</button>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text">Mandá el comprobante por WhatsApp a<br>
+        <a href="https://wa.me/34603474644">+34 603 474 644</a> o
+        <a href="https://wa.me/5491167980273">+54 9 11 6798-0273</a>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-text">Cuando confirmemos el pago, <strong>te llega la confirmación al email</strong>.</div>
+    </div>
+  </div>
+
+  <button class="submit-btn" id="submitBtn" onclick="submitForm()">Enviar registro</button>
+  <p class="disclaimer">Tu lugar queda reservado solo cuando confirmemos el pago.<br>No hagas la transferencia antes de enviar el formulario.</p>
+</div>
+
+<div class="success-screen" id="successSection">
+  <div class="success-icon">✓</div>
+  <div class="success-title">¡Listo!</div>
+  <p class="success-text">Registramos tus datos.<br><br>
+  Hacé la transferencia al alias <strong style="color:#c8893a" id="successAlias">tanda1</strong> y mandá el comprobante por WhatsApp.<br><br>
+  Cuando confirmemos el pago te llega la confirmación al email.</p>
+</div>
+
+<button class="config-toggle" onclick="toggleConfig()">⚙</button>
+<div class="config-panel" id="configPanel">
+  <div class="config-title">Configurar tanda</div>
+  <div class="config-field"><label>Nombre de tanda</label><input type="text" id="cfgTanda" value="Tanda 1"></div>
+  <div class="config-field"><label>Precio</label><input type="number" id="cfgPrecio" value="30000"></div>
+  <div class="config-field"><label>Alias</label><input type="text" id="cfgAlias" value="tanda1"></div>
+  <button class="config-save" onclick="saveConfig()">Guardar cambios</button>
+</div>
+
+<script>
+  const API_URL = 'https://script.google.com/macros/s/AKfycbyqawYio7MOmRfLjGhYj-1SfNLcv8QmfPnZjSO5f0fCx0dxKKbLgOqjBEjWZG0DTNZBUQ/exec';
+  let config = { tanda: 'Tanda 1', precio: 30000, alias: 'tanda1' };
+
+  function applyConfig() {
+    document.getElementById('tandaTag').textContent = config.tanda;
+    document.getElementById('tandaPill').textContent = config.tanda;
+    document.getElementById('priceDisplay').textContent = '$' + Number(config.precio).toLocaleString('es-AR');
+    document.getElementById('aliasDisplay').textContent = config.alias;
+  }
+  function saveConfig() {
+    config.tanda = document.getElementById('cfgTanda').value.trim() || config.tanda;
+    config.precio = document.getElementById('cfgPrecio').value || config.precio;
+    config.alias = document.getElementById('cfgAlias').value.trim() || config.alias;
+    applyConfig();
+    document.getElementById('configPanel').classList.remove('open');
+  }
+  function toggleConfig(){
+    const pass=prompt('Contraseña:');
+    if(pass==='fiesta2025'){document.getElementById('configPanel').classList.toggle('open');}
+  }
+  function copyAlias() {
+    const alias = document.getElementById('aliasDisplay').textContent;
+    navigator.clipboard.writeText(alias).catch(() => {});
+    event.target.textContent = '¡copiado!';
+    setTimeout(() => event.target.textContent = 'copiar', 2000);
+  }
+
+  function submitForm() {
+    const nombre = document.getElementById('nombre').value.trim();
+    const dni = document.getElementById('dni').value.trim();
+    const email = document.getElementById('email').value.trim();
+    if (!nombre || !dni || !email) { alert('Completá todos los campos.'); return; }
+    if (!email.includes('@')) { alert('Email inválido.'); return; }
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+
+    const params = new URLSearchParams({
+      action: 'register', nombre, dni, email,
+      tanda: config.tanda, precio: String(config.precio)
+    });
+
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = API_URL + '?' + params.toString();
+    iframe.onload = () => {
+      try { document.body.removeChild(iframe); } catch(e) {}
+      mostrarExito();
+    };
+    document.body.appendChild(iframe);
+    setTimeout(() => {
+      try { document.body.removeChild(iframe); } catch(e) {}
+      mostrarExito();
+    }, 5000);
+  }
+
+  function mostrarExito() {
+    document.getElementById('successAlias').textContent = config.alias;
+    document.getElementById('formSection').style.display = 'none';
+    document.getElementById('successSection').style.display = 'block';
+  }
+
+  applyConfig();
+</script>
+</body>
+</html>
