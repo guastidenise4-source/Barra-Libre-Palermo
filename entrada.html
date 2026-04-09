@@ -84,10 +84,10 @@ input::placeholder{color:#444}
 
   <div class="price-box">
     <div>
-      <div class="price-label">Entrada con barra libre</div>
-      <div class="tanda-pill" id="tandaPill">Tanda 1</div>
+      <div class="price-label">♂ Hombre $36.000 · ♀ Mujer $30.000</div>
+      <div class="tanda-pill" id="tandaPill">Tanda 2</div>
     </div>
-    <div class="price-value" id="priceDisplay">$30.000</div>
+    <div class="price-value" id="priceDisplay">Tanda 2</div>
   </div>
 
   <div class="payment-box">
@@ -141,7 +141,7 @@ input::placeholder{color:#444}
 
 <script>
   const API_URL = 'https://script.google.com/macros/s/AKfycbyqawYio7MOmRfLjGhYj-1SfNLcv8QmfPnZjSO5f0fCx0dxKKbLgOqjBEjWZG0DTNZBUQ/exec';
-  let config = { tanda: 'Tanda 1', precio: 30000, alias: 'tanda1-fiesta' };
+  let config = { tanda: 'Tanda 2', precio: 30000, alias: 'tanda2-fiesta' };
 
   function applyConfig() {
     document.getElementById('tandaTag').textContent = config.tanda;
