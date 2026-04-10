@@ -102,7 +102,7 @@ input::placeholder{color:#444}
       <div class="step-num">2</div>
       <div class="step-text">Transferí el importe a este alias:
         <div class="alias-box">
-          <span class="alias-val" id="aliasDisplay">tanda2-fiesta</span>
+          <span class="alias-val" id="aliasDisplay">tanda3-fiesta</span>
           <button class="copy-btn" onclick="copyAlias()">copiar</button>
         </div>
       </div>
@@ -128,7 +128,7 @@ input::placeholder{color:#444}
   <div class="success-icon">✓</div>
   <div class="success-title">¡Listo!</div>
   <p class="success-text">Registramos tus datos.<br><br>
-  Hacé la transferencia al alias <strong style="color:#c8893a" id="successAlias">tanda2-fiesta</strong> y mandá el comprobante por WhatsApp.<br><br>
+  Hacé la transferencia al alias <strong style="color:#c8893a" id="successAlias">tanda3-fiesta</strong> y mandá el comprobante por WhatsApp.<br><br>
   Cuando confirmemos el pago te llega la confirmación al email.</p>
 </div>
 
@@ -143,7 +143,7 @@ input::placeholder{color:#444}
 
 <script>
   const API_URL = 'https://script.google.com/macros/s/AKfycbyqawYio7MOmRfLjGhYj-1SfNLcv8QmfPnZjSO5f0fCx0dxKKbLgOqjBEjWZG0DTNZBUQ/exec';
-  let config = { tanda: 'Tanda 3', precio: 35000, alias: 'tanda2-fiesta' };
+  let config = { tanda: 'Tanda 3', precio: 35000, alias: 'tanda3-fiesta' };
 
   function applyConfig() {
     document.getElementById('tandaTag').textContent = config.tanda;
