@@ -57,7 +57,7 @@ input::placeholder{color:#444}
 <body>
 
 <div class="hero">
-  <div class="event-tag" id="tandaTag">Tanda 2</div>
+  <div class="event-tag" id="tandaTag">Tanda 3</div>
   <h1>Barra Libre<br><span>Palermo</span></h1>
   <div class="event-info">
     <div class="event-pill"><div class="dot"></div><strong>11 de Abril</strong></div>
@@ -84,11 +84,11 @@ input::placeholder{color:#444}
 
 <div class="price-box">
   <div>
-    <div class="tanda-pill" id="tandaPill">Tanda 2</div>
+    <div class="tanda-pill" id="tandaPill">Tanda 3</div>
   </div>
   <div style="text-align:right">
-    <div class="price-value" style="font-size:22px">♂ Hombre $36.000</div>
-    <div class="price-value" style="font-size:22px">♀ Mujer $30.000</div>
+    <div class="price-value" style="font-size:22px">♂ Hombre $40.000</div>
+    <div class="price-value" style="font-size:22px">♀ Mujer $35.000</div>
   </div>
 </div>
 
@@ -135,15 +135,15 @@ input::placeholder{color:#444}
 <button class="config-toggle" onclick="toggleConfig()">⚙</button>
 <div class="config-panel" id="configPanel">
   <div class="config-title">Configurar tanda</div>
-  <div class="config-field"><label>Nombre de tanda</label><input type="text" id="cfgTanda" value="Tanda 2"></div>
+  <div class="config-field"><label>Nombre de tanda</label><input type="text" id="cfgTanda" value="Tanda 3"></div>
   <div class="config-field"><label>Precio</label><input type="number" id="cfgPrecio" value="30000"></div>
-  <div class="config-field"><label>Alias</label><input type="text" id="cfgAlias" value="tanda2"></div>
+  <div class="config-field"><label>Alias</label><input type="text" id="cfgAlias" value="tanda3"></div>
   <button class="config-save" onclick="saveConfig()">Guardar cambios</button>
 </div>
 
 <script>
   const API_URL = 'https://script.google.com/macros/s/AKfycbyqawYio7MOmRfLjGhYj-1SfNLcv8QmfPnZjSO5f0fCx0dxKKbLgOqjBEjWZG0DTNZBUQ/exec';
-  let config = { tanda: 'Tanda 2', precio: 30000, alias: 'tanda2-fiesta' };
+  let config = { tanda: 'Tanda 3', precio: 35000, alias: 'tanda2-fiesta' };
 
   function applyConfig() {
     document.getElementById('tandaTag').textContent = config.tanda;
